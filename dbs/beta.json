@@ -1,0 +1,213 @@
+{
+  "sisreg": {
+    "token": true,
+    "logs": [
+      {
+        "user": "920HUGO-GASTRICA",
+        "psw": "c5c7fbd145cb238dbe68ef620fdd15447ed374358b75c11376fe69229b567172"
+      },
+      {
+        "user": "sergio.valle.execsol",
+        "psw": "8479bef3eb6df973bc4a543660bbfb767575abe7537724af35c331eed908eb00"
+      },
+      {
+        "user": "FLAVIA.SANREG",
+        "psw": "9436580294e2d0b2fd1dd9276e46eadf16193efb25713f6bad07fb8b901bc461"
+      },
+      {
+        "user": "CAROLINE.MENDES",
+        "psw": "a12519de627a54db194bd84af665b2c1063b322c6ad24b7def324b0cd5dab37b"
+      }
+    ]
+  },
+  "mop": {
+    "token": "33128",
+    "logs": [
+      {
+        "user": "30646009",
+        "psw": "kamale12"
+      },
+      {
+        "user": "92071267",
+        "psw": "Revelacao@2"
+      }
+    ]
+  },
+  "sispes": {
+    "token": "-1691217210943955983:5919903408768801966",
+    "logs": [
+      {
+        "user": "00805422714",
+        "psw": "Helpsos01@@"
+      }
+    ]
+  },
+  "policiaagil": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjoiODM5M2MwOTQtNzdiMC00NTViLWJmMTktNDQzNjgwMTU3NWMwIiwiY3BmIjoiMDk3OTE1MTg0ODMiLCJub21lIjoiSk9BTyBBTEVYQU5EUkUgQkFSQk9TQSBERSBMSU1BIiwiZW1haWwiOiJqb2FvLmxpbWEzQHBtLnBlLmdvdi5iciIsImJhc2UiOiJwbSIsImlkX29tZSI6NDE2NSwib21lIjoiMTHCqiBDSVBNIiwiaWRfYWNlc3NvIjoiMCIsInNpc3RlbWFzIjpbMSwyLDMsNCw3LDhdLCJpYXQiOjE3NjUxMzE4OTUsImV4cCI6MTc2NTEzOTA5NX0.coXrqiINOA2rzfXTv5ycySCV_ynhFyETNkwaRGjZs7E",
+    "logs": [
+      {
+        "user": "joao.lima3|Midia|KRXRYIBMF4GGUDQZ|Midia|pm",
+        "psw": "GloryBoys222"
+      }
+    ]
+  },
+  "sds": {
+    "token": null,
+    "logs": [
+      {
+        "user": "11717562400",
+        "psw": "Caveira2022"
+      },
+      {
+        "user": "08036125404",
+        "psw": "Ljoaoa007"
+      },
+      {
+        "user": "03569623424",
+        "psw": "Delta1823"
+      },
+      {
+        "user": "04725726443",
+        "psw": "Siqueira27"
+      },
+      {
+        "user": "01390204464",
+        "psw": "772141414Pmpe"
+      },
+      {
+        "user": "05301779435",
+        "psw": "Tabira10"
+      },
+      {
+        "user": "04865751440",
+        "psw": "Kle071084"
+      },
+      {
+        "user": "07517627414",
+        "psw": "Carlos12"
+      }
+    ]
+  },
+  "cerebrum": {
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjIzNjcxODEyMTksImlhdCI6MTc2MjM4MTIxOSwiaW50ZXJuYWxJZCI6OTUxNiwiZXh0ZXJuYWxJZCI6OTM5MCwiYXBwU2VydmVyS2V5IjoiNDZkZmY4ZjE1NDJkMjQzYTA2OWI4NmViOTVkNTEwOGUxMWE2NzQ1NSIsInR5cGVDbGllbnQiOiJ1c2VyIiwidHlwZVRva2VuIjoiZGVmYXVsdCIsInRva2VuTnVtYmVyIjoxLCJyb2xlcyI6WyJST0xFX0NFUkVCUlVNX0JVU0NBX0NWUCIsIlJPTEVfQ0VSRUJSVU1fQlVTQ0FfQ0lWSUwiLCJST0xFX0NFUkVCUlVNX0JVU0NBX0NSSU1JTkFMIiwiUk9MRV9DRVJFQlJVTV9CVVNDQV9DVkxJX0FJUyIsIlJPTEVfQ0VSRUJSVU1fQlVTQ0FfQ1ZMSV9SRVBPUlQiLCJST0xFX0NFUkVCUlVNX0FPTV9QQ0FfT05MSU5FIiwiUk9MRV9DRVJFQlJVTV9BT01fUENBIiwiUk9MRV9DRVJFQlJVTV9ISVNUX0JJT01FVFJJQSIsIlJPTEVfQ0VSRUJSVU1fQlVTQ0FfQ05IX0NQRiIsIlJPTEVfQ0VSRUJSVU1fQlVTQ0FfVkVJQ1VMT1NfQ1BGX0NOUEoiLCJST0xFX0NFUkVCUlVNX0JVU0NBX1ZFSUNVTE9fREVUQUxIRSIsIlJPTEVfQ0VSRUJSVU1fQlVTQ0FfVkVJQ1VMT19FTkQiLCJST0xFX0NFUkVCUlVNX0FPTV9WSUFUVVJBU19PTkxJTkUiLCJST0xFX0NFUkVCUlVNX0JVU0NBX1NJU1BFTiIsIlJPTEVfQ0VSRUJSVU1fQ09MRVRBU19TSVNQRU4iLCJST0xFX0NFUkVCUlVNX0xJU1RBX0NBTUVSQVMiLCJST0xFX0NFUkVCUlVNX0NBTUVSQVNfU1RSRUFNIiwiUk9MRV9DRVJFQlJVTV9JTkRJQ0FET1JFU19BUkVBIiwiUk9MRV9DRVJFQlJVTV9QTklEIiwiUk9MRV9DRVJFQlJVTV9GVU5DRU1FIiwiUk9MRV9DRVJFQlJVTV9URVJNT01FVFJPX1BSRiIsIlJPTEVfQ0VSRUJSVU1fQU9NX1ZJQVRVUkFTX0FSRUEiLCJST0xFX1BMQVRGT1JNX0NJVklMX0VORF9URUwiLCJST0xFX0NFUkVCUlVNX0lOUV9ERVRBTEhFUyIsIlJPTEVfQ0VSRUJSVU1fSU5ESUNBRE9SRVNfU0lUVUFDQU9fQUlTIiwiUk9MRV9DRVJFQlJVTV9QTV9QRVJGSUwiLCJST0xFX0NFUkVCUlVNX1NJTkRJT05JQlVTIiwiUk9MRV9DRVJFQlJVTV9TSU5ESU9OSUJVU19FTkRfVEVMIiwiUk9MRV9DRVJFQlJVTV9JTkVQX0VTQ09MQVMiLCJST0xFX0NFUkVCUlVNX0JVU0NBX0NJVklMX0FGSUxJQUNPRVMiLCJST0xFX0NFUkVCUlVNX0JVU0NBX0NSSU1JTkFMX0FGSUxJQUNPRVMiLCJST0xFX0NFUkVCUlVNX1ZJU0lUQU5URVNfU0lTUEVOIiwiUk9MRV9DRVJFQlJVTV9WSVNJVEFTX1NJU1BFTiIsIlJPTEVfQ0VSRUJSVU1fVklTSVRBTlRFX0VORF9URUxfU0lTUEVOIiwiUk9MRV9DRVJFQlJVTV9HRU9DT0RFUiIsIlJPTEVfQ0VSRUJSVU1fSU5ESUNBRE9SRVNfVEVSTU9NRVRST19WSUVXRVIiLCJST0xFX0NFUkVCUlVNX0lORElDQURPUkVTX1RFUk1PTUVUUk9fTUFOQUdFUiIsIlJPTEVfQ0VSRUJSVU1fRVZFTlRPU19GQUNDT0VTX0FSRUEiLCJST0xFX0NFUkVCUlVNX1BDX1BFUkZJTCIsIlJPTEVfQ0VSRUJSVU1fQ0FNRVJBU19IUV9TVFJFQU0iLCJST0xFX0NFUkVCUlVNX0NBRF9FUVVJUEVTX0FUSVZBUyIsIlJPTEVfQ0VSRUJSVU1fQ0FEX0VRVUlQRVNfSElTVE9SSUNPIiwiUk9MRV9DRVJFQlJVTV9DQURfT0NPUlJFTkNJQVNfQVRJVkFTIiwiUk9MRV9DRVJFQlJVTV9DQURfT0NPUlJFTkNJQVNfSElTVE9SSUNPIiwiUk9MRV9DRVJFQlJVTV9DQURfT0NPUlJFTkNJQVNfTk9UQVMiLCJST0xFX0NFUkVCUlVNX0NBRF9PQ09SUkVOQ0lBU19FUVVJUEVTIiwiUk9MRV9DRVJFQlJVTV9DQURfT0NPUlJFTkNJQVNfVklUSU1BIiwiUk9MRV9DRVJFQlJVTV9DQURfT0NPUlJFTkNJQVNfQVVUT1IiLCJST0xFX0NFUkVCUlVNX0NBRF9PQ09SUkVOQ0lBU19OT1RJRklDQURPUiIsIlJPTEVfQ0VSRUJSVU1fQ0FEX09DT1JSRU5DSUFTX1RFU1RFTVVOSEFTIiwiUk9MRV9DRVJFQlJVTV9ERUxFR0FDSUFTIiwiUk9MRV9DRVJFQlJVTV9CVVNDQV9FTkVMIiwiUk9MRV9DRVJFQlJVTV9CVVNDQV9BSVMiXX0.i0pUOw5zl55XBFtjjYTHnz7qWBO1agnT9YE34Iqnn0w",
+    "logs": [
+      {
+        "user": "02666275361",
+        "psw": "@Maria1009"
+      }
+    ]
+  },
+  "redebio": {
+    "token": "1117e72ab680055d4a345e2d38c5b789|Midia|5A54C19221222D5C",
+    "logs": [
+      {
+        "user": "marlon.nunes|Midia|A88A75D28E1C8557",
+        "psw": "Marlon1978"
+      },
+      {
+        "user": "thiago_souza|Midia|106E80B3B1F7D270",
+        "psw": "Hornet600F"
+      },
+      {
+        "user": "liciane.paula|Midia|5A54C19221222D5C",
+        "psw": "LICIANE080388"
+      },
+      {
+        "user": "renato.bitencourt|Midia|5D7336C5950133A2",
+        "psw": "Re20061988"
+      },
+      {
+        "user": "thiago.marsicano|Midia|F71148E906CBD7B6",
+        "psw": "Tma.090891"
+      }
+    ]
+  },
+  "nexus": {
+    "logs": [
+      {
+        "user": "stanley.lima",
+        "psw": "Brasil@2025"
+      }
+    ]
+  },
+  "sipni": {
+    "token": true,
+    "logs": [
+      {
+        "user": "Midia22",
+        "psw": "155290e32973b60fa3f6335e3ea55554c0def388d584c0cb4135e2360221204123170de1cf6eac155cee8a846440871d3010e9fbc089eeb2d48b9aa6bb37db67"
+      }
+    ]
+  },
+  "checkonn": {
+    "token": true,
+    "logs": [
+      {
+        "user": "indianeholleweger@gmail.com",
+        "psw": "Vini280311!"
+      }
+    ]
+  },
+  "sigma": {
+    "token": null,
+    "logs": [
+      {
+        "user": "649.583.453-53",
+        "psw": "Allan1234#"
+      }
+    ]
+  },
+  "habilitacaoPR": {
+    "token": true,
+    "logs": [
+      {
+        "user": "carlos.esantos",
+        "psw": "Sagui23011"
+      }
+    ]
+  },
+  "Vadu": {
+    "token": true,
+    "logs": [
+      {
+        "user": "fabiano@finanzafactoring.com.br",
+        "psw": "F@b691011"
+      }
+    ]
+  },
+  "detranRo": {
+    "token": null,
+    "logs": [
+      {
+        "user": "70899541291",
+        "psw": "W3bm25t3r@"
+      }
+    ]
+  },
+  "epge": {
+    "token": "eyJraWQiOiI5MWY4YzczOS1hZTFhLTRjOTUtYjE4NC05ZTMxODg4YjEzNGEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI3MjM3MDc1MDEyMCIsImlkVXN1YXJpbyI6NzA5LCJpc3MiOiJodHRwOi8vd3d3LnBnZS5nby5nb3YuYnIiLCJhdXRob3JpdGllcyI6WyI0MyIsIjQzLTEiLCI0My0yIiwiNDYiLCI0Ni0xIiwiNDciLCI0Ny0xIiwiNTQ0IiwiNTQ0LTEiLCI1NDQtMiIsIjYyIiwiNjItMSIsIjgwMiIsIjgwMi0xIiwiODAyLTIiLCI4MDkiLCI4MDktMSIsIjkwNSIsIjkwNS0xIiwiOTA1LTIiLCI5MDUtMyIsIjkwNS00IiwiOTA1LTUiLCI5MDciLCI5MDctMSIsIjkwNy0yIiwiOTA3LTMiLCI5MDctNSIsIkdFRl9DT05TVUxUQSIsIlBFU1FVSVNBU19EQURPU19QRVNTT0FJUyIsIlBFU1FVSVNBX0hPTUUiLCJTQ1BDSEVGRV9JTUVESUFUTyJdLCJhdWQiOiJEQU5JRUwgR0FSQ0lBIERFIE9MSVZFSVJBIiwibm9tZVVzdWFyaW8iOiJEQU5JRUwgR0FSQ0lBIERFIE9MSVZFSVJBIiwiaWRQZXNzb2EiOjM2Njk5MzIsImNwZiI6IjcyMzcwNzUwMTIwIiwiZXhwIjoxNzY1MTg1MjU2LCJpYXQiOjE3NjUxNTY0NTYsImp0aSI6ImQ0MmFjNGUwMDNhOTQ0ZGI4ZmQ0M2NiNmFmNWY3YTY4IiwiZW1haWwiOiJkYW5pZWwuZ2FvbGl2ZWlyYUBwZ2UuZ28uZ292LmJyIn0.AHgB6aOMbvzGqj899qfP24MhZOb9YMzbQ_MXUotAULZ-5FtMZqG4cGfr5peW7YbUrKIw-Lv3JQzt2cFSZkFDfVksEcBf97GJ0VvfEB1JUBRcFa-755K1eyAY1Lb8DPkED9CNFiPrKSdHsPu0tnix8Kk1EAZhuvgBQ56Ie3pwUKLUGiiop2EYLFJvHC2VqjN2-3MqG7kf-r2usS7NqpDCCVDdp1JNHb9Sy-P7bExUxkV_wBZAzfq1t_CQZomwcsqnJ0OFwVu_DTMID8etykIoaKfH5Cwm60JvXlG086IzMZm41roHPlbZnaPLi4lC-IMgGxrghXxlrIA2QIAiyzTLWw",
+    "logs": [
+      {
+        "user": "72370750120",
+        "psw": "DANI&guga2501"
+      }
+    ]
+  },
+  "extranetMG": {
+    "token": true,
+    "logs": [
+      {
+        "user": "4578258:6681357",
+        "psw": "699185:612309"
+      }
+    ]
+  },
+  "tokens": [
+    {
+      "token": "xry"
+    },
+    {
+      "token": "cavalo"
+    }
+  ]
+}

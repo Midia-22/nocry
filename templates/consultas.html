@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoCry - Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0c0f17;
+            color: #fff;
+            display: flex;
+            height: 100vh;
+        }
+        .main h2 {
+            text-align: center;
+            width: 100%;
+            margin: 10px 0 25px;
+        }
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #11141f;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #1d2333;
+        }
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #00bfff;
+        }
+        .menu-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #1a1f2d;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: block;
+            color: #fff;
+            text-decoration: none;
+        }
+        .menu-item:hover {
+            background: #232a3d;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .search-box {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 38%;
+            max-width: 360px;
+            padding: 10px;
+            border-radius: 12px;
+            border: none;
+            background: #1c2331;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            z-index: 999;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .module-card {
+            background: #1a1f2d;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            transition: 0.2s;
+        }
+        .module-card:hover {
+            transform: scale(1.03);
+            background: #222838;
+        }
+        .module-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #ff6666;
+        }
+        .module-desc {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .module-btn {
+            padding: 10px;
+            width: 90%;
+            background: #00bfff;
+            border: none;
+            color: #000;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .module-btn:hover {
+            background: #0099cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>NoCry</h2>
+
+        <a href="#" class="menu-item">Início</a>
+        <a href="#" class="menu-item">Checkers</a>
+        <a href="#" class="menu-item">Módulos</a>
+        <a href="#" class="menu-item">Minha Conta</a>
+        <a href="#" class="menu-item">Saldo</a>
+        <a href="#" class="menu-item">Configurações</a>
+        <a href="#" class="menu-item">Suporte</a>
+    </div>
+
+
+    <div class="main">
+        <h2>Módulos Disponíveis</h2>
+        <input class="search-box" placeholder="Buscar módulos..." type="text">
+
+        <!-- corrigido: adicionado id="modulesGrid" -->
+        <div class="modules-grid" id="modulesGrid"></div>
+    </div>
+
+<script>
+    const searchBox = document.querySelector('.search-box');
+    const grid = document.getElementById('modulesGrid');
+    let allModules = [];
+
+    async function loadModules() {
+        try {
+            const response = await fetch("modules");
+            if (!response.ok) {
+                console.error("Erro carregando JSON:", response.status);
+                return;
+            }
+
+            const data = await response.json();
+            allModules = data;
+            renderModules(data);
+
+        } catch (e) {
+            console.error("Erro:", e);
+        }
+    }
+
+    function renderModules(list) {
+        grid.innerHTML = "";
+
+        list.forEach(mod => {
+            const card = document.createElement("div");
+            card.className = "module-card";
+
+            card.innerHTML = `
+                <div class="module-title" style="color: ${mod.online ? '#E6E6E6' : '#ff4444'};">
+                    ${mod.title}
+                </div>
+                <div class="module-desc">${mod.desc}</div>
+                <a href="modulo#${mod.id}" class="module-btn">Acessar</a>
+            `;
+
+            grid.appendChild(card);
+        });
+    }
+
+    searchBox.addEventListener("input", () => {
+        const value = searchBox.value.toLowerCase();
+        const filtered = allModules.filter(m =>
+            m.title.toLowerCase().includes(value)
+        );
+        renderModules(filtered);
+    });
+
+    loadModules();
+    async function validar() {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            window.location.href = "/login";
+            return;
+        }
+
+        const req = await fetch("/verificar_token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token })
+        });
+
+        const res = await req.json();
+
+        if (!res.ok) {
+            localStorage.removeItem("token");
+            window.location.href = "/login";
+        }
+    }
+
+    validar();
+</script>
+
+</body>
+</html>

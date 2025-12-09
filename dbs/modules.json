@@ -1,0 +1,88 @@
+[
+    {
+        "id":"cadsus1",
+        "title":"Cadsus",
+        "desc":"Consulta base Cadsus",
+        "online":true,
+        "forms":["cpf","nome","cns","data_de_nascimento","nome_mãe"]
+    },
+    {
+        "id":"veiculo1",
+        "title":"Veiculo Nacional",
+        "desc":"Consulta base veiculo",
+        "online":true,
+        "forms":["placa","chassi","renavam","motor","caixaCambio"]
+
+    },
+    {
+        "id":"veiculo2",
+        "title":"Veiculo Nacional 2",
+        "desc":"Consulta base veiculo 2",
+        "online":true,
+        "forms":["placa","chassi"]
+    },
+
+
+    {
+        "id":"cnh",
+        "title":"Registro CNH",
+        "desc":"Consulta CNH completa",
+        "online":true,
+        "forms":["cpf","cnh"]
+    },
+    {
+        "id":"receita",
+        "title":"Receita Federal",
+        "desc":"Consulta CPF completa",
+        "online":true,
+        "forms":["cpf","cnpj"]
+    },
+
+    {
+        "id":"chave-pix",
+        "title":"Chave Pix",
+        "desc":"Consulta chave pix completa com vinculos",
+        "online":true,
+        "forms":["cpf","chave_aleatoria","telefone","email","cnpj"]
+    },
+
+    {
+        "id":"foto-pr",
+        "title":"Foto Paraná",
+        "desc":"Consulta foto Paraná CNH",
+        "online":true,
+        "forms":["cpf","cnh"]
+
+    },
+    {
+        "id":"foto-pe",
+        "title":"Foto Pernanbuco",
+        "desc":"Consulta foto Pernanbuco",
+        "online":true,
+        "forms":["cpf"]
+
+    },
+    {
+        "id":"foto-ro",
+        "title":"Foto Rondônia",
+        "desc":"Consulta foto Rondônia",
+        "online":false,
+        "forms":["cpf","cnh"]
+
+    },
+    {
+        "id":"foto-ba",
+        "title":"Foto Bahia",
+        "desc":"Consulta foto Bahia",
+        "online":false,
+        "forms":["cpf"]
+    },
+    {
+        "id":"foto-es",
+        "title":"Foto Espirito Santo",
+        "desc":"Consulta foto Espirito Santo",
+        "online":true,
+        "forms":["cpf"]
+    }
+]
+

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Módulo - Dashboard Premium</title>
+
+<style>
+    body {
+        margin: 0;
+        background: #0d1117;
+        font-family: Arial, sans-serif;
+        color: #ffffff;
+    }
+
+    /* HEADER */
+    .topbar {
+        height: 60px;
+        background: #0f141c;
+        border-bottom: 1px solid #1d2333;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 25px;
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+    }
+    .logo {
+        font-size: 30px;
+        font-weight: bold;
+        color: #00bfff;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .user-area {
+        opacity: 0.75;
+        position: absolute;
+        left: 90%;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+        width: 260px;
+        background: #11141f;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid #1d2333;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #00bfff;
+    }
+
+    .menu-item {
+        padding: 12px 15px;
+        margin: 8px 0;
+        background: #1a1f2d;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+        text-decoration: none;
+        color: #ffffff;
+        display: block;
+    }
+
+    .menu-item:hover {
+        background: #232a3d;
+    }
+
+    /* CONTENT AREA */
+    .container {
+        padding: 30px;
+        margin-left: 300px;
+        margin-top: 40px;
+    }
+
+    .module-header {
+        background: #11141d;
+        border: 1px solid #1d2230;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    }
+
+    .module-header h1 {
+        font-size: 28px;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .module-header .info {
+        font-size: 14px;
+        opacity: 0.7;
+        margin-top: 5px;
+    }
+
+    /* SEARCH BOX */
+    .search-box {
+        background: #11141d;
+        border: 1px solid #1d2230;
+        border-radius: 14px;
+        padding: 25px;
+        margin-top: 20px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.25);
+    }
+
+    .search-title {
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #00bfff;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .input-group {
+        flex: 1;
+        min-width: 240px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-group label {
+        margin-bottom: 6px;
+        font-size: 14px;
+        opacity: 0.7;
+        font-weight: bold;
+    }
+
+    .input-group input {
+        padding: 12px;
+        background: #0b0e14;
+        border: 1px solid #1d2230;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 15px;
+        transition: 0.25s ease;
+    }
+
+    .input-group input:focus {
+        border-color: #00bfff;
+        box-shadow: 0 0 8px #00bfff55;
+        outline: none;
+    }
+
+    /* BUTTON */
+    .btn-area {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+
+    .btn {
+        padding: 12px 26px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.25s ease;
+    }
+
+    .btn-search {
+        background: #3f7bff;
+        color: white;
+        box-shadow: 0 4px 14px rgba(63,123,255,0.4);
+    }
+
+    .btn-search:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(63,123,255,0.6);
+    }
+
+    .btn-search:active {
+        transform: translateY(-1px);
+    }
+
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 900px) {
+        .sidebar {
+            position: fixed;
+            width: 200px;
+        }
+        .container {
+            margin-left: 210px;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .sidebar {
+            display: none;
+        }
+        .container {
+            margin-left: 0;
+        }
+    }
+
+</style>
+</head>
+
+<body>
+
+
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Módulos</h2>
+
+        <a class="menu-item" href="#">Início</a>
+        <a class="menu-item" href="#">Checkers</a>
+        <a class="menu-item" href="/consultas">Consultas</a>
+        <a class="menu-item" href="#">Minha Conta</a>
+        <a class="menu-item" href="#">Saldo</a>
+        <a class="menu-item" href="#">Configurações</a>
+        <a class="menu-item" href="#">Suporte</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container">
+
+        <div class="module-header">
+            <h1>Título do Módulo</h1>
+            <div class="info">Informações extras do módulo aqui</div>
+        </div>
+
+        <div class="search-box">
+
+            <div class="search-title">Busque por informações</div>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>CPF</label>
+                    <input type="text" placeholder="000.000.000-00" />
+                </div>
+                <div class="input-group">
+                    <label>CNPJ</label>
+                    <input type="text" placeholder="00.000.000/0000-00" />
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Telefone</label>
+                    <input type="text" placeholder="(00) 00000-0000" />
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="text" placeholder="email@exemplo.com" />
+                </div>
+            </div>
+
+            <div class="btn-area">
+                <button class="btn btn-search">Pesquisar</button>
+            </div>
+        
+            <div id="resultado-busca" style="margin-top:20px;"></div>
+
+        </div>
+
+    </div>
+<script src="{{ url_for('static', filename='modulo.js') }}"></script>
+
+</body>
+</html>
