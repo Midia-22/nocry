@@ -43,7 +43,7 @@
     ]
   },
   "policiaagil": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjoiODM5M2MwOTQtNzdiMC00NTViLWJmMTktNDQzNjgwMTU3NWMwIiwiY3BmIjoiMDk3OTE1MTg0ODMiLCJub21lIjoiSk9BTyBBTEVYQU5EUkUgQkFSQk9TQSBERSBMSU1BIiwiZW1haWwiOiJqb2FvLmxpbWEzQHBtLnBlLmdvdi5iciIsImJhc2UiOiJwbSIsImlkX29tZSI6NDE2NSwib21lIjoiMTHCqiBDSVBNIiwiaWRfYWNlc3NvIjoiMCIsInNpc3RlbWFzIjpbMSwyLDMsNCw3LDhdLCJpYXQiOjE3NjUxMzE4OTUsImV4cCI6MTc2NTEzOTA5NX0.coXrqiINOA2rzfXTv5ycySCV_ynhFyETNkwaRGjZs7E",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjoiODM5M2MwOTQtNzdiMC00NTViLWJmMTktNDQzNjgwMTU3NWMwIiwiY3BmIjoiMDk3OTE1MTg0ODMiLCJub21lIjoiSk9BTyBBTEVYQU5EUkUgQkFSQk9TQSBERSBMSU1BIiwiZW1haWwiOiJqb2FvLmxpbWEzQHBtLnBlLmdvdi5iciIsImJhc2UiOiJwbSIsImlkX29tZSI6NDE2NSwib21lIjoiMTHCqiBDSVBNIiwiaWRfYWNlc3NvIjoiMCIsInNpc3RlbWFzIjpbMSwyLDMsNCw3LDhdLCJpYXQiOjE3NjUyNDYzNTEsImV4cCI6MTc2NTI1MzU1MX0.bZPHKC-UNO1FRYpG0dazdzeAAN0QPV7braECsBf0Wzw",
     "logs": [
       {
         "user": "joao.lima3|Midia|KRXRYIBMF4GGUDQZ|Midia|pm",
@@ -98,7 +98,7 @@
     ]
   },
   "redebio": {
-    "token": "1117e72ab680055d4a345e2d38c5b789|Midia|5A54C19221222D5C",
+    "token": "870d18e85f079ec4f8170daf87457160|Midia|5A54C19221222D5C",
     "logs": [
       {
         "user": "marlon.nunes|Midia|A88A75D28E1C8557",
@@ -199,6 +199,15 @@
       {
         "user": "4578258:6681357",
         "psw": "699185:612309"
+      }
+    ]
+  },
+  "detranmg": {
+    "token": true,
+    "logs": [
+      {
+        "user": "67351964653",
+        "psw": "filhas02"
       }
     ]
   },

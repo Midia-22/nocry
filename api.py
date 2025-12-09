@@ -6,7 +6,6 @@ import time
 import json
 import os
 import threading
-import msvcrt
 import re
 import pyotp
 import urllib3
@@ -14,10 +13,24 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 db_lock = threading.Lock()
 
-DB_PATH = r"dbs\beta.json"
+DB_PATH = os.path.join("dbs", "beta.json")
 
+proxy_url = f"http://user-pias6568569313-region-br-st-minasgerais-city-juizdefora-sessid-brwkuojsop9ztw291-sesstime-90:iXgT3mu1g7o8b@va.proxy.piaproxy.com:5000"
+proxies = {
+    "http":  proxy_url,
+    "https": proxy_url,
+}
+class TimeoutSession(requests.Session):
+    def __init__(self, timeout=None):
+        super().__init__()
+        self.timeout = timeout
 
+    def request(self, *args, **kwargs):
+        if 'timeout' not in kwargs:
+            kwargs['timeout'] = self.timeout
+        return super().request(*args, **kwargs)
 
+        
 class Sisreg:
     def __init__(self,user,psw):
         self.user = user
@@ -168,7 +181,8 @@ class Cadsus:
     def __init__(self, usuario, senha_hash):
         self.usuario = usuario
         self.senha_hash = senha_hash
-        self.session = requests.Session()
+        self.session = TimeoutSession(timeout=20)
+        self.session.proxies.update(proxies)
         self.token = None
         self.base_headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:143.0) Gecko/20100101 Firefox/143.0',
@@ -404,79 +418,80 @@ class Cadsus:
                 if (dados[key]) in ['SEM INFORMAÇÃO','',' ']:
                     dados[key] = None
             data.append(dados)
-            if not len(data) == 1:
-                return data 
+        
+        if not len(data) == 1:
+            return data 
 
-            data = data[0]
-            cns = data['cns']
-            extra = consult_generic(Sisreg,'sisreg',cns)
-            if extra:
-                data.update(extra)
-            else:
-                return data
+        data = data[0]
+        cns = data['cns']
+        extra = consult_generic(Sisreg,'sisreg',cns)
+        if extra:
+            data.update(extra)
+        else:
+            return data
 
-            # NORMALIZAR CHAVES
-            def normalize_key(key):
-                return (
-                    key.lower()
-                    .replace(" ", "_")
-                    .replace("ã", "a")
-                    .replace("á", "a")
-                    .replace("â", "a")
-                    .replace("é", "e")
-                    .replace("í", "i")
-                    .replace("ó", "o")
-                    .replace("ô", "o")
-                    .replace("ú", "u")
-                    .replace("ç", "c")
-                    .replace("(", "")
-                    .replace(")", "")
-                )
+        # NORMALIZAR CHAVES
+        def normalize_key(key):
+            return (
+                key.lower()
+                .replace(" ", "_")
+                .replace("ã", "a")
+                .replace("á", "a")
+                .replace("â", "a")
+                .replace("é", "e")
+                .replace("í", "i")
+                .replace("ó", "o")
+                .replace("ô", "o")
+                .replace("ú", "u")
+                .replace("ç", "c")
+                .replace("(", "")
+                .replace(")", "")
+            )
 
-            data = { normalize_key(k): v for k, v in data.items() }
+        data = { normalize_key(k): v for k, v in data.items() }
 
-            # MAPA DE CAMPOS
-            pessoa_map = {
-                "Identificação": [
-                    "nome_completo",
-                    "nome_social",
-                    "sexo",
-                    "raca",
-                    "nacionalidade",
-                    "data_nascimento",
-                    "cns",
-                    "cpf",
-                ],
+        # MAPA DE CAMPOS
+        pessoa_map = {
+            "Identificação": [
+                "nome_completo",
+                "nome_social",
+                "sexo",
+                "raca",
+                "nacionalidade",
+                "data_nascimento",
+                "cns",
+                "cpf",
+            ],
 
-                "Filiação": [
-                    "nome_mae",
-                    "nome_pai",
-                ],
+            "Filiação": [
+                "nome_mae",
+                "nome_pai",
+            ],
 
-                "Endereço": [
-                    "tipo_logradouro",
-                    "logradouro",
-                    "bairro",
-                    "municipio",
-                    "uf",
-                    "cep",
-                    "pais_residencia",
-                ],
+            "Endereço": [
+                "tipo_logradouro",
+                "logradouro",
+                "bairro",
+                "municipio",
+                "uf",
+                "cep",
+                "pais_residencia",
+            ],
 
-                "Contato": [
-                    "telefones",
-                ],
-            }
+            "Contato": [
+                "telefones",
+            ],
+        }
 
-            resultado = {}
+        resultado = {}
 
-            for secao, campos in pessoa_map.items():
-                resultado[secao] = {}
-                for campo in campos:
-                    if campo in data and data[campo] not in (None, "", "null"):
-                        resultado[secao][campo] = data[campo]
+        for secao, campos in pessoa_map.items():
+            resultado[secao] = {}
+            for campo in campos:
+                if campo in data and data[campo] not in (None, "", "null"):
+                    resultado[secao][campo] = data[campo]
 
-            return resultado
+        return resultado
 
 class Checkonn:
     def __init__(self,user,psw):
@@ -1003,6 +1018,7 @@ class Pernanbuco:
         self.psw = psw
         self.token = None
         self.session = session or requests.Session()
+
         self.headers = {
             'Accept': 'application/json, text/plain, */*',
             'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -1263,7 +1279,6 @@ class CNH1:
         self.user = user
         self.psw = psw
         self.session = requests.Session()
-        #self.session.proxies.update(proxy_premiun)
         self.token = None
 
     def Login(self):
@@ -1512,12 +1527,17 @@ class CNH1:
 
 class ChavePix:
     def __init__(self,user,psw):
-        user1,self.user = user.split(":")
-        psw1,self.psw = psw.split(":")
-
+        try:
+            user1,self.user = user.split(":")
+            psw1,self.psw = psw.split(":")
+        except:
+            self.token = False
+            return
+        self.token = False
         self.session = requests.Session()
-        payload = base64.b64encode(f"{user1}:{psw1}".encode()).decode()
 
+        self.session.proxies.update(proxies)
+        payload = base64.b64encode(f"{user1}:{psw1}".encode()).decode()
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -1619,6 +1639,115 @@ class ChavePix:
         if chaves == {}:
             return None
         return(chaves)
+
+class DetranMG:
+    def __init__(self, user, psw):
+        self.user = user
+        self.psw = psw
+        self.token = False
+
+        self.session = requests.Session()
+        self.session.verify = False
+                
+        self.headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Origin': 'https://empresas.detran.mg.gov.br',
+                'Connection': 'keep-alive',
+                'Referer': 'https://empresas.detran.mg.gov.br/RIJUD/login.asp',
+                'Upgrade-Insecure-Requests': '1',
+                'Sec-Fetch-Dest': 'document',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'same-origin',
+                'Sec-Fetch-User': '?1',
+                'Priority': 'u=0, i',
+            }
+
+    def Login(self):
+        data = {
+            'usuario': self.user,
+            'senha': self.psw,
+            'sistema': 'rijud',
+            'url_inicial': 'frame.asp',
+        }
+
+        response = self.session.post(
+            'https://empresas.detran.mg.gov.br/valida_certificado/verifica-login-usuario-senha.asp',
+            headers=self.headers,
+            data=data,
+        )
+        if not '<frame src="principal.asp" name="principal">' in response.text:
+            return(False)
+        else:
+            self.token = True
+            return(True)
+
+    def Consulta(self,value):
+        value = re.sub(r'[^A-Za-z0-9]', '', value)
+        data = {
+                'cnpj': '',
+                'cpf': '',
+                'renavam': '',
+                'placa': value,
+                'chassi': '',
+            }
+
+    
+        response = self.session.post('https://empresas.detran.mg.gov.br/RIJUD/consultaVeic02.asp',  headers=self.headers, data=data)
+        html = response.text
+
+        if 'color="#FFFFFF">Mensagem !<' in html:
+            return(None)
+        elif not 'Aguarde carregando ...' in html:
+            return(False)
+
+        soup = BeautifulSoup(html, "html.parser")
+
+        table = soup.find("table")
+        linhas = table.find_all("tr")
+
+        resultado = {}
+
+        for tr in linhas:
+            tds = tr.find_all("td")
+            
+            if not tds:
+                continue
+
+            # --- Função util para limpar textos ---
+            def limpa(txt):
+                txt = txt.replace("\n", " ").replace("\t", " ")
+                txt = re.sub(r"\s+", " ", txt).strip()
+                return txt
+
+            if len(tds) == 4:
+                k1 = limpa(tds[0].get_text())
+                v1 = limpa(tds[1].get_text())
+                k2 = limpa(tds[2].get_text())
+                v2 = limpa(tds[3].get_text())
+
+                if k1:
+                    resultado[k1] = v1
+                if k2:
+                    resultado[k2] = v2
+
+            elif len(tds) == 2:
+                k = limpa(tds[0].get_text())
+                v = limpa(tds[1].get_text())
+
+                # --- Correção especial do proprietário ---
+                if k.lower().startswith("propriet"):
+                    # remove espaços extras e o "-" solto
+                    v = v.replace(" - ", " - ").strip()
+
+                if k:
+                    resultado[k] = v
+        return (resultado)
+    
+
+
 
 class FotoBa:
     def __init__(self, user, psw, session=None):
@@ -1847,14 +1976,24 @@ class FotoEs:
             }
             return retorno
 
+if os.name == "nt":
+    import msvcrt
 
-def file_lock(fp):
-    """Trava arquivo exclusivamente no Windows."""
-    msvcrt.locking(fp.fileno(), msvcrt.LK_LOCK, 1)
+    def file_lock(fp):
+        msvcrt.locking(fp.fileno(), msvcrt.LK_LOCK, 1)
 
-def file_unlock(fp):
-    """Destrava arquivo."""
-    msvcrt.locking(fp.fileno(), msvcrt.LK_UNLCK, 1)
+    def file_unlock(fp):
+        msvcrt.locking(fp.fileno(), msvcrt.LK_UNLCK, 1)
+
+# Linux / macOS
+else:
+    import fcntl
+
+    def file_lock(fp):
+        fcntl.flock(fp.fileno(), fcntl.LOCK_EX)
+
+    def file_unlock(fp):
+        fcntl.flock(fp.fileno(), fcntl.LOCK_UN)
 
 def save_db(db):
     with db_lock:  # garante que apenas 1 thread passa aqui
@@ -1937,7 +2076,6 @@ def consult_generic(cls, db_key: str, data):
             if r not in [False, None]:
                 return r
             
-
             client.token = None
             persist_session(client)
         except Exception:
@@ -1948,6 +2086,7 @@ def consult_generic(cls, db_key: str, data):
         u, p = entry["user"], entry["psw"]
         client = cls(u, p)
         token = client.Login()
+
         if not token:
             continue
         client.token = token
@@ -1971,11 +2110,10 @@ def consult_generic(cls, db_key: str, data):
     return False
 
 
-
 dict_support = [
     "cadsus1",
-    "veiculo1",
-    "veiculo2",
+    "bin",
+    "senatran",
     "cnh",
     "chave-pix",
 
@@ -1984,24 +2122,117 @@ dict_support = [
     "foto-ro",
 ]
 entrys = {
-    "cadsus1": ("sipni", Cadsus), # CPF NOME CNS 
-    "receita": ("epge", Receita), # CPF
-    "cnh": ("habilitacaoPR", CNH1), # CPF
+    "cadsus1": (
+        "sipni",
+        Cadsus
+    ),  # forms: cpf, nome, cns, data_de_nascimento, nome_mãe
 
-    "chave-pix": ("extranetMG",ChavePix),
+    "receita": (
+        "epge",
+        Receita
+    ),  # forms: cpf, cnpj
 
-    "veiculo1":("redebio",Parana), 
-    "veiculo2":("policiaagil",Pernanbuco),
+    "cnh": (
+        "habilitacaoPR",
+        CNH1
+    ),  # forms: cpf, cnh
 
-    "foto-pr": ("redebio",Parana),
-    "foto-pe":("policiaagil",Pernanbuco),
-    "foto-ro":("detranRo",DetranRO),
-    "foto-ba": ('mop',FotoBa),
-    "foto-es": ("sispes",FotoEs)
+    "chave-pix": (
+        "extranetMG",
+        ChavePix
+    ),  # forms: cpf, chave_aleatoria, telefone, email, cnpj
+
+    "bin": (
+        "redebio",
+        Parana
+    ),  # forms: placa, chassi, renavam, motor, caixaCambio
+
+    "juds": (
+        "detranmg",
+        DetranMG
+    ),  # forms: placa
+
+    "senatran": (
+        "policiaagil",
+        Pernanbuco
+    ),  # forms: placa, chassi
+
+    "foto-pr": (
+        "redebio",
+        Parana
+    ),  # forms: cpf, cnh
+
+    "foto-pe": (
+        "policiaagil",
+        Pernanbuco
+    ),  # forms: cpf
+
+    "foto-ro": (
+        "detranRo",
+        DetranRO
+    ),  # forms: cpf, cnh
+
+    "foto-ba": (
+        "mop",
+        FotoBa
+    ),  # forms: cpf
+
+    "foto-es": (
+        "sispes",
+        FotoEs
+    ),  # forms: cpf
 }
 
 
+def Main():
+    from flask import Flask,request,jsonify
+    
+    APIS_TOKEN = ['curl1533']
+
+    app = Flask(__name__)
+    @app.route("/api/<id>/<token>", methods=["GET"])
+    def consulta(id,token):
+        
+        if token not in APIS_TOKEN:
+            return jsonify({"ok": False, "msg": "token invalido"}), 403
+
+        form = request.args.to_dict() or {}
+        if id in dict_support:
+            valor = form
+        else:
+            values = 0
+            for key in form:
+                if form[key]:
+                    values += 1
+            
+            if values > 1:
+                valor = form
+            elif values == 1:
+                for key in form:
+                    value = form[key]
+                    if value:
+                        valor = value
+            else:
+                return jsonify({"ok": False, "msg": f"parametros invalido"}), 404
+
+
+        entry = entrys.get(id)
+        if entry:
+            db_key,cls = entry
+        else:
+            return jsonify({"ok": False, "msg": f"base {id} não encontrada"}), 404
+
+        result = consult_generic(cls,db_key,valor)
+
+        if result is False:
+            return jsonify({"ok": False, "msg": "erro interno"}), 400
+        elif result is None:
+            return jsonify({"ok": True, "msg": "sem registros"}), 200
+        else:
+            return jsonify({"ok": True, "data": result}), 200
+        
+    
+    return app
 if __name__ == "__main__":
-    c = Checkonn("indianeholleweger@gmail.com","Vini280311!")
-    c.Login()
-    print(c.Consulta('616.543.614-53'))
+    app = Main()
+    app.run(host="0.0.0.0", port=8081,debug=True)

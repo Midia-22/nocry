@@ -7,21 +7,27 @@
         "forms":["cpf","nome","cns","data_de_nascimento","nome_mãe"]
     },
     {
-        "id":"veiculo1",
+        "id":"bin",
         "title":"Veiculo Nacional",
-        "desc":"Consulta base veiculo",
+        "desc":"Consulta base veiculo BIN",
         "online":true,
         "forms":["placa","chassi","renavam","motor","caixaCambio"]
 
     },
     {
-        "id":"veiculo2",
-        "title":"Veiculo Nacional 2",
-        "desc":"Consulta base veiculo 2",
+        "id":"juds",
+        "title":"Veiculo Nacional JUDS",
+        "desc":"Consulta base veiculo JUDS",
+        "online":true,
+        "forms":["placa"]
+    },
+    {
+        "id":"senatran",
+        "title":"Veiculo Nacional SENATRAN",
+        "desc":"Consulta base veiculo SENATRAN",
         "online":true,
         "forms":["placa","chassi"]
     },
-
 
     {
         "id":"cnh",

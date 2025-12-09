@@ -206,6 +206,17 @@ function validarCampos() {
 /* -------------------------------
    FUNÇÃO: ENVIAR BUSCA
 --------------------------------*/
+function setFormEnabled(enabled) {
+    document.querySelectorAll(".input-group input, .btn-search").forEach(el => {
+        el.disabled = !enabled;
+        el.style.opacity = enabled ? "1" : "0.6"; // feedback visual
+        el.style.cursor = enabled ? "pointer" : "not-allowed";
+    });
+}
+
+/* -------------------------------
+   FUNÇÃO: ENVIAR BUSCA
+--------------------------------*/
 async function enviarBusca() {
     const moduloID = location.hash.replace("#", "").trim();
     if (!moduloID) return alert("Módulo inválido.");
@@ -214,6 +225,18 @@ async function enviarBusca() {
     document.querySelectorAll(".input-group input").forEach(input => {
         dados[input.dataset.field] = input.value.trim();
     });
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Token não encontrado. Faça login novamente.");
+        window.location.href = "/login";
+        return;
+    }
+
+    dados.token = token;
+
+    // DESABILITA FORMULÁRIO ENQUANTO A REQUISIÇÃO ESTÁ EM ANDAMENTO
+    setFormEnabled(false);
 
     try {
         const resposta = await fetch(`/api/${moduloID}/`, {
@@ -227,9 +250,11 @@ async function enviarBusca() {
     } catch (e) {
         console.error("Erro ao enviar busca:", e);
         alert("Erro na requisição.");
+    } finally {
+        // REABILITA FORMULÁRIO APÓS A RESPOSTA OU ERRO
+        setFormEnabled(true);
     }
 }
-
 /* -------------------------------
    FUNÇÃO: EXIBIR RESULTADO
 --------------------------------*/
@@ -395,6 +420,17 @@ function criarCard(obj, tituloSecao) {
    INICIALIZAÇÃO
 --------------------------------*/
 document.addEventListener("DOMContentLoaded", () => {
+    // Clique no botão
     document.querySelector(".btn-search").addEventListener("click", enviarBusca);
+
+    // Delegação de eventos para Enter
+    const searchBox = document.querySelector(".search-box");
+    searchBox.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault(); // evita o submit padrão
+            enviarBusca();
+        }
+    });
+
     carregarModulo();
 });

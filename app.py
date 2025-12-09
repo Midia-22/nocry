@@ -6,7 +6,7 @@ import jwt
 import json
 import time
 import datetime
-from api import *
+import requests
 
 app = Flask(__name__)
 
@@ -122,42 +122,19 @@ def modulo_com_ancora(id):
 def consulta(id):
     form = request.get_json(silent=True) or {}
 
-
-    if id in dict_support:
-        valor = form
+    if not form.get("token"):
+        return jsonify({"ok": False, "error": "sessão invalida"})
     else:
-        values = 0
-        for key in form:
-            if form[key]:
-                values += 1
-        
-        if values > 1:
-            valor = form
-        elif values == 1:
-            for key in form:
-                value = form[key]
-                if value:
-                    valor = value
-        else:
-            return jsonify({"ok": False, "msg": f"parametros invalido"}), 404
+        token = form.get("token")
+        payload = validar_jwt(token)
+        if not payload:
+            return jsonify({"ok": False, "error": "sessão invalida"})
+    form.pop("token", None)
 
-
-
-    
-    entry = entrys.get(id)
-    if entry:
-        db_key,cls = entry
-    else:
-        return jsonify({"ok": False, "msg": f"base {id} não encontrada"}), 404
-
-    result = consult_generic(cls,db_key,valor)
-
-    if result is False:
-        return jsonify({"ok": False, "msg": "erro interno"}), 400
-    elif result is None:
-        return jsonify({"ok": True, "msg": "sem registros"}), 200
-    else:
-        return jsonify({"ok": True, "data": result}), 200
+    params = "?"+"".join([f"{k}={v}&" for k, v in form.items()])
+    url = f"http://72.60.158.140:8081/api/{id}/curl1533{params}"
+    r = requests.get(url)
+    return jsonify(r.json())
     
 
 # ============================
