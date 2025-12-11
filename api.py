@@ -8,6 +8,10 @@ import os
 import threading
 import re
 import pyotp
+from html import unescape
+from requests.adapters import HTTPAdapter
+from urllib3 import PoolManager
+import ssl
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -15,7 +19,8 @@ db_lock = threading.Lock()
 
 DB_PATH = os.path.join("dbs", "beta.json")
 
-proxy_url = f"http://user-pias6568569313-region-br-st-minasgerais-city-juizdefora-sessid-brwkuojsop9ztw291-sesstime-90:iXgT3mu1g7o8b@va.proxy.piaproxy.com:5000"
+proxy_url = "socks5://mygoysxz0:nralaowy0@185.104.13.143:8889"
+
 proxies = {
     "http":  proxy_url,
     "https": proxy_url,
@@ -30,7 +35,7 @@ class TimeoutSession(requests.Session):
             kwargs['timeout'] = self.timeout
         return super().request(*args, **kwargs)
 
-        
+
 class Sisreg:
     def __init__(self,user,psw):
         self.user = user
@@ -182,7 +187,6 @@ class Cadsus:
         self.usuario = usuario
         self.senha_hash = senha_hash
         self.session = TimeoutSession(timeout=20)
-        self.session.proxies.update(proxies)
         self.token = None
         self.base_headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:143.0) Gecko/20100101 Firefox/143.0',
@@ -1018,7 +1022,7 @@ class Pernanbuco:
         self.psw = psw
         self.token = None
         self.session = session or requests.Session()
-
+        #self.session.proxies.update(proxies)
         self.headers = {
             'Accept': 'application/json, text/plain, */*',
             'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -1030,32 +1034,31 @@ class Pernanbuco:
         }
 
     def Login(self):
-        try:
-            codigo = pyotp.TOTP(self.chave).now()
-            json_data = {
-                'USUARIO': self.user,
-                'SENHA': self.psw,
-                'BASE': self.base,
-                'SISTEMA': 'policiaagil-web',
-                'IP': '',
-                'OTP': codigo,
-            }
-            resp = self.session.post(
-                'https://auth-bids.apps.ocp-server.ati.pe.gov.br/login',
-                headers=self.headers,
-                json=json_data
-            )
-            
-            text = resp.text
-            if "Usuário ou Senha inválidos!" in text:
-                return False
-            token = resp.json().get('token')
-            if not token:
-                return False
-            self.token = token
-            return self.token
-        except Exception:
+        codigo = pyotp.TOTP(self.chave).now()
+        json_data = {
+            'USUARIO': self.user,
+            'SENHA': self.psw,
+            'BASE': self.base,
+            'SISTEMA': 'policiaagil-web',
+            'IP': '',
+            'OTP': codigo,
+        }
+        resp = self.session.post(
+            'https://auth-bids.apps.ocp-server.ati.pe.gov.br/login',
+            headers=self.headers,
+            json=json_data
+        )
+        
+        text = resp.text
+
+        if "Usuário ou Senha inválidos!" in text:
             return False
+        token = resp.json().get('token')
+        if not token:
+            return False
+        self.token = token
+        return self.token
+
 
     def Consulta(self, form):
         if not self.token:
@@ -1082,6 +1085,8 @@ class Pernanbuco:
             url,
             headers=headers
         )
+        if 'Token malformated' in resp1.text:
+            return False    
         if '"message"' in resp1.text:
             return False
         if resp1.text.strip() == '"A Busca não encontrou resultados"':
@@ -1535,8 +1540,7 @@ class ChavePix:
             return
         self.token = False
         self.session = requests.Session()
-
-        self.session.proxies.update(proxies)
+        #self.session.proxies.update(proxies)    
         payload = base64.b64encode(f"{user1}:{psw1}".encode()).decode()
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0',
@@ -1746,8 +1750,388 @@ class DetranMG:
                     resultado[k] = v
         return (resultado)
     
+class Siel:
+    def __init__(self, user:str, psw:str,):
+
+        self.user = user
+        self.psw = psw
+        if user:
+            self.user,self.chave = user.split("|Midia|")
+
+        self.session = requests.Session()
+        self.token = None
+    
+
+    def Login(self):
+        codigo = pyotp.TOTP(self.chave).now()
+        codigo = f'{codigo[:3]}.{codigo[3:]}'
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Sec-GPC': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Sec-Fetch-User': '?1',
+            'Priority': 'u=0, i',
+        }
+
+        response = self.session.get('https://siel.tse.jus.br/session/new', headers=headers)
+        r = response.text
+        csrf = r.split('csrf-token" content="')[1].split('"')[0]
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Referer': 'https://siel.tse.jus.br/',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': 'https://siel.tse.jus.br',
+            'Sec-GPC': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
+            'Priority': 'u=0, i',
+        }
+
+        data = {
+            'authenticity_token': csrf,
+            'session[email]': self.user,
+            'session[password]': self.psw,
+            'session[otp]': codigo,
+            'commit': 'Entrar',
+        }
+
+        response = self.session.post('https://siel.tse.jus.br/session',  headers=headers, data=data)
+        if not 'Informe nome ou parte do nome' in response.text:
+            return(False)
+
+        csrf = r.split('csrf-token" content="')[1].split('"')[0]
+        self.token = csrf
+        return self.token
 
 
+    def Consulta(self,value):
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Referer': 'https://siel.tse.jus.br/',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': 'https://siel.tse.jus.br',
+            'Sec-GPC': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
+            'Priority': 'u=0, i',
+        }
+
+
+        if not value:
+            return False
+
+        data = {
+            'authenticity_token': self.token,
+            'pesquisa[num_processo]': '1',
+            'pesquisa[identificador]': value,  # CPF / TITULO DE ELEITOR
+            'pesquisa[nome]': '',
+            'pesquisa[base]': [
+                '',
+                '2',
+            ],
+            'pesquisa[data_nasc]': '',
+            'pesquisa[nome_mae]': '',
+            'pesquisa[natural_uf]': '',
+            'pesquisa[natural_municipio]': '',
+            'pesquisa[domicilio_uf]': '',
+            'pesquisa[domicilio_municipio]': '',
+            'button': 'Pesquisar',
+        }
+
+        response = self.session.post('https://siel.tse.jus.br/pesquisas',  headers=headers, data=data)
+        r = response.text
+        if 'Nenhum Resultado encontrado' in r:
+            return(None)
+        elif not 'Resultado da Pesquisa' in r:
+            return False
+        
+        soup = BeautifulSoup(r, 'html.parser')
+        table = soup.find('table',class_="table table-card my-4")
+
+        pesquisaId = None
+        if table:
+            for line in table.find_all('tr'):
+                pesquisaId = line.find('input', attrs={'name': 'pesquisa_origem_id'})
+
+                if pesquisaId: 
+                    pesquisaId = pesquisaId['value']
+                    eleitor = line.find('td', class_='center').text.strip()
+                    cpf = line.find('td', class_='center font-monospace').text.strip()
+                    cpf = re.sub(r'\D', '', cpf)
+                
+                    break
+
+
+        csrf = r.split('csrf-token" content="')[1].split('"')[0]
+
+
+        data = {
+            'authenticity_token': csrf,
+            'base': '2',
+            'cpf': cpf,
+            'pesquisa_origem_id': pesquisaId,
+            'titulo': eleitor,
+        }
+
+        response = self.session.post('https://siel.tse.jus.br/detalhes', headers=headers, data=data)
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        table = soup.find('div',class_="card-horizontal label-w-12 parametros")
+        if table:
+            resultado = {}
+            for line in table.find_all('div'):
+                key = line.find('label').get_text(strip=True)
+                if key == 'cd_status':
+                    continue
+
+                value = line.find('p',)
+                if value:
+                    value = value.get_text(strip=True)
+                else:
+                    value = ''
+
+                resultado[key] = value
+
+        return resultado
+
+
+class PortalRj:
+    def __init__(self, user, psw):
+        self.user = user
+        self.psw = psw
+        self.token = None
+
+        self.session = requests.Session()
+        self.session.verify = False  # Ignora SSL warnings
+
+    def Login(self):
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Referer': 'https://10.200.96.20/portal/portal/FrameSetLogin.aspx?Root=Portal',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'iframe',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Priority': 'u=4',
+        }
+
+        response = self.session.get('https://10.200.96.20/portal/portal/IULoginNovo.aspx', headers=headers)
+        r = response.text
+
+        event = r.split('id="__EVENTVALIDATION" value="')[1].split('"')[0]
+        vs = r.split('id="__VIEWSTATE_KEY" value="')[1].split('"')[0]
+
+                
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': 'https://10.200.96.20',
+            'Connection': 'keep-alive',
+            'Referer': 'https://10.200.96.20/portal/portal/IULoginNovo.aspx',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'iframe',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
+            'Priority': 'u=4',
+        }
+
+        data = {
+            '__EVENTTARGET': '',
+            '__EVENTARGUMENT': '',
+            '__VIEWSTATE_KEY': vs,
+            '__VIEWSTATE': '',
+            '__EVENTVALIDATION': event,
+            'txtUsuario': self.user,
+            'txtSenhan': self.psw,
+            'btnEntrar': 'Entrar',
+        }
+
+        response = self.session.post('https://10.200.96.20/portal/portal/IULoginNovo.aspx', headers=headers, data=data)
+        r = response.text
+        
+        if 'cadastrado. Deseja cadastrar?' in response.text:
+            event = r.split('id="__EVENTVALIDATION" value="')[1].split('"')[0]
+            vs = r.split('id="__VIEWSTATE_KEY" value="')[1].split('"')[0]
+            data = {
+                '__EVENTTARGET': '',
+                '__EVENTARGUMENT': '',
+                '__VIEWSTATE_KEY': vs,
+                '__VIEWSTATE': '',
+                '__EVENTVALIDATION': event,
+                'txtUsuario': self.user,
+                'txtSenhan': '',
+                'btnSim': 'Sim',
+            }
+
+            response = self.session.post('https://10.200.96.20/portal/portal/IULoginNovo.aspx', headers=headers, data=data)
+            if not 'src="Consulta/IUPagBranco.aspx" id="Iframe2" name="princApp" frameborder="no"' in response.text:
+                return False
+            else:
+                self.token = True
+                return self.token 
+        elif not '<iframe src="Consulta/IUPagBranco.aspx" id="Iframe2" name="princApp"' in response.text:
+            return False
+        else:
+            self.token = True
+            return self.token
+    
+
+
+    def Consulta(self, form):
+        map = {
+            "nome":"txtNome",
+            "cpf":"txtCpf",
+            "rg":"txtRG",
+        }
+        for key,valor in form.items():
+            valor = form[key]
+            if valor:
+                key = map.get(key)
+                break
+
+        if not self.token:
+            return False
+
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            # 'Accept-Encoding': 'gzip, deflate, br, zstd',
+            'Referer': 'https://10.200.96.20/portal/portal/FrameSetApp.aspx?TelaWidth=1280&TelaHeight=1024',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'iframe',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Priority': 'u=4',
+        }
+
+        response = self.session.get('https://10.200.96.20/portal/portal/Consulta/IUBuscaID.aspx',  headers=headers)
+        r = response.text
+        if not 'Nome/Nome Social' in r:
+            return False
+            
+        event = r.split('id="__EVENTVALIDATION" value="')[1].split('"')[0]
+        vs = r.split('id="__VIEWSTATE_KEY" value="')[1].split('"')[0]
+        pg = r.split('id="__PREVIOUSPAGE" value="')[1].split('"')[0]
+
+        token = vs.split('VIEWSTATE_')[1].split('_')[0]
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': 'https://10.200.96.20',
+            'Connection': 'keep-alive',
+            'Referer': 'https://10.200.96.20/portal/portal/Consulta/IUBuscaID.aspx',
+            'Cookie': f'Cookies suportados; ASP.NET_SessionId={token}',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'iframe',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'same-origin',
+            'Sec-Fetch-User': '?1',
+            'Priority': 'u=4',
+        }
+
+        data = {
+            '__EVENTTARGET': '',
+            '__EVENTARGUMENT': '',
+            '__LASTFOCUS': '',
+            '__VIEWSTATE_KEY': vs,
+            '__VIEWSTATE': '',
+            '__PREVIOUSPAGE': pg,
+            '__EVENTVALIDATION': event,
+            'txtRG': '',
+            'txtCpf': '',
+            'txtcnpj': '',
+            'txtMatricula': '',
+            'txtCNH': '',
+            'txtvplaca': 'LHR0361',
+            'txtrenavam': '',
+            'txtchassi': '',
+            'txtsinarm': '',
+            'txtArmaSerie': '',
+            'txtNome': '', # NOME
+            'txtSobreNome_nome': '',
+            'txtNascDia': '',
+            'txtNascMes': '',
+            'txtNascAno': '',
+            'txtPai': '',
+            'txtSobreNome_pai': '',
+            'txtFaixaIni': '',
+            'txtFaixaFim': '',
+            'txtMae': '',
+            'txtSobreNome_mae': '',
+            'txtConjuge': '',
+            'txtSobreNome_conjuge': '',
+            'txtVulgo': '',
+            'txtEmpresa': '',
+            'rblNome': 'iniciado',
+            'rblPai': 'iniciado',
+            'rblMae': 'iniciado',
+            'rblConjuge': 'iniciado',
+            'rblEmpresa': 'iniciado',
+            'txtFCodAutor': '',
+            'txtFAutor': '',
+            'txtProcesso': '',
+            'txtNrRO': '',
+            'txtAnoRO': '',
+            'txtvplacait': '',
+            'txtvDtIni': '',
+            'txtvDtFim': '',
+            'btnProcurar': 'Aguarde...',
+        }
+        data[key] = valor
+
+        response = self.session.post('https://10.200.96.20/portal/portal/Consulta/IUBuscaID.aspx', headers=headers, data=data)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        tabel = soup.find('div',id='divCivilRg')
+
+        if not tabel:
+            return(None)
+
+        keys = [k.get_text().split(":")[0].strip() for k in tabel.find_all('span',class_='StlLbl_P')]
+        values = [v.get_text() for v in tabel.find_all('span',class_='StlLbl_G')]
+
+        result = dict(zip(keys, values))
+        if 'IUImagemID.aspx?' in response.text:
+            params = response.text.split('src="IUImagemID.aspx?')[1].split('"')[0]
+            params = unescape(params)
+            url_img = f'https://10.200.96.20/portal/portal/Consulta/IUImagemID.aspx?{params}'
+            img_resp = self.session.get(url_img, headers=headers)
+
+            if img_resp.text:
+                result['Foto'] = base64.b64encode(img_resp.content).decode()
+
+        return result
 
 class FotoBa:
     def __init__(self, user, psw, session=None):
@@ -2116,7 +2500,8 @@ dict_support = [
     "senatran",
     "cnh",
     "chave-pix",
-
+    
+    'foto-rj',
     "foto-pr",
     "foto-pe",
     "foto-ro",
@@ -2157,6 +2542,13 @@ entrys = {
         Pernanbuco
     ),  # forms: placa, chassi
 
+
+    "tse": (
+        "siel",
+        Siel
+    ),  # forms: placa, chassi
+
+
     "foto-pr": (
         "redebio",
         Parana
@@ -2181,20 +2573,31 @@ entrys = {
         "sispes",
         FotoEs
     ),  # forms: cpf
+    'foto-rj': (
+        'portalrj',
+        PortalRj
+    ),  # forms: nome, cpf, rg
 }
 
 
 def Main():
     from flask import Flask,request,jsonify
     
-    APIS_TOKEN = ['curl1533']
-
+    path = os.path.join('dbs','tokens.json')
+    def loadDB():
+        with open(path,'r',encoding='utf-8') as f:
+            return json.load(f)
+    
     app = Flask(__name__)
     @app.route("/api/<id>/<token>", methods=["GET"])
     def consulta(id,token):
+        APIS_TOKEN = loadDB()
         
-        if token not in APIS_TOKEN:
+        if not APIS_TOKEN.get(token):
             return jsonify({"ok": False, "msg": "token invalido"}), 403
+            
+        if id not in APIS_TOKEN[token]['access']:
+            return jsonify({"ok": False, "msg": "acesso negado para essa base"}), 403
 
         form = request.args.to_dict() or {}
         if id in dict_support:
@@ -2235,4 +2638,4 @@ def Main():
     return app
 if __name__ == "__main__":
     app = Main()
-    app.run(host="0.0.0.0", port=8081,debug=True)
+    app.run(host="0.0.0.0", port=8081,debug=False   )

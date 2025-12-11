@@ -43,7 +43,7 @@
     ]
   },
   "policiaagil": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjoiODM5M2MwOTQtNzdiMC00NTViLWJmMTktNDQzNjgwMTU3NWMwIiwiY3BmIjoiMDk3OTE1MTg0ODMiLCJub21lIjoiSk9BTyBBTEVYQU5EUkUgQkFSQk9TQSBERSBMSU1BIiwiZW1haWwiOiJqb2FvLmxpbWEzQHBtLnBlLmdvdi5iciIsImJhc2UiOiJwbSIsImlkX29tZSI6NDE2NSwib21lIjoiMTHCqiBDSVBNIiwiaWRfYWNlc3NvIjoiMCIsInNpc3RlbWFzIjpbMSwyLDMsNCw3LDhdLCJpYXQiOjE3NjUyNDYzNTEsImV4cCI6MTc2NTI1MzU1MX0.bZPHKC-UNO1FRYpG0dazdzeAAN0QPV7braECsBf0Wzw",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjoiODM5M2MwOTQtNzdiMC00NTViLWJmMTktNDQzNjgwMTU3NWMwIiwiY3BmIjoiMDk3OTE1MTg0ODMiLCJub21lIjoiSk9BTyBBTEVYQU5EUkUgQkFSQk9TQSBERSBMSU1BIiwiZW1haWwiOiJqb2FvLmxpbWEzQHBtLnBlLmdvdi5iciIsImJhc2UiOiJwbSIsImlkX29tZSI6NDE2NSwib21lIjoiMTHCqiBDSVBNIiwiaWRfYWNlc3NvIjoiMCIsInNpc3RlbWFzIjpbMSwyLDMsNCw3LDhdLCJpYXQiOjE3NjUzODM5NTksImV4cCI6MTc2NTM5MTE1OX0.FsQwKCPuNef6hQA76_S_3JvP4Y_IpOGsrP3XLcQiJbg",
     "logs": [
       {
         "user": "joao.lima3|Midia|KRXRYIBMF4GGUDQZ|Midia|pm",
@@ -208,6 +208,28 @@
       {
         "user": "67351964653",
         "psw": "filhas02"
+      }
+    ]
+  },
+  "portalRj": {
+    "token": true,
+    "logs": [
+      {
+        "user": "107404105",
+        "psw": "F@lleiroBi@06"
+      },
+      {
+        "user": "71443360",
+        "psw": "Ze8723066@"
+      }
+    ]
+  },
+  "siel": {
+    "token": null,
+    "logs": [
+      {
+        "user": "danieltrisuzzi@pcivil.rj.gov.br|Midia|GFXEQISOMDHKGOLPS5CUG7M4H6I45VB7",
+        "psw": "Daniel@1213*"
       }
     ]
   },

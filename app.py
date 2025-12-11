@@ -7,6 +7,7 @@ import json
 import time
 import datetime
 import requests
+from api import * 
 
 app = Flask(__name__)
 
@@ -118,10 +119,11 @@ def modulo_com_ancora(id):
     """Carrega modulo.html e adiciona âncora #id corretamente."""
     return redirect(url_for("modulo_base") + f"#{id}")
 
+
+
 @app.route("/api/<id>/", methods=["POST"])
 def consulta(id):
     form = request.get_json(silent=True) or {}
-
     if not form.get("token"):
         return jsonify({"ok": False, "error": "sessão invalida"})
     else:
@@ -131,11 +133,51 @@ def consulta(id):
             return jsonify({"ok": False, "error": "sessão invalida"})
     form.pop("token", None)
 
-    params = "?"+"".join([f"{k}={v}&" for k, v in form.items()])
-    url = f"http://72.60.158.140:8081/api/{id}/curl1533{params}"
-    r = requests.get(url)
-    return jsonify(r.json())
-    
+
+    # Definir "valor" dependendo do suporte
+    if id in dict_support:
+        valor = form
+    else:
+        values = sum(1 for k in form if form[k])
+
+        if values > 1:
+            valor = form
+
+        elif values == 1:
+            # pega o único valor não vazio
+            for key in form:
+                if form[key]:
+                    valor = form[key]
+                    break
+
+        else:
+            return jsonify({"ok": False, "msg": "parametros invalido"}), 404
+
+    # Verificar base
+    entry = entrys.get(id)
+    if not entry:
+        return jsonify({"ok": False, "msg": f"base {id} não encontrada"}), 404
+
+    db_key, cls = entry
+
+    # Executa consulta
+    result = consult_generic(cls, db_key, valor)
+
+    # Respostas
+    if result is False:
+        return jsonify({"ok": False, "msg": "erro interno"}), 400
+
+    elif result is None:
+        return jsonify({"ok": True, "msg": "sem registros"}), 200
+
+    return jsonify({"ok": True, "data": result}), 200
+
+# ============================
+# EXECUÇÃO
+# ============================
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=80, debug=False)
+
 
 # ============================
 # EXECUÇÃO

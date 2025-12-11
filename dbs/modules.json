@@ -89,6 +89,13 @@
         "desc":"Consulta foto Espirito Santo",
         "online":true,
         "forms":["cpf"]
+    },
+    {
+        "id":"foto-rj",
+        "title":"Foto Rio de Janeiro",
+        "desc":"Consulta foto Rio de Janeiro",
+        "online":true,
+        "forms":["nome","cpf","rg"]
     }
 ]
 
